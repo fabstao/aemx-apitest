@@ -63,6 +63,21 @@ stages {
            sh '''
            #!/bin/bash
            echo "Iniciando conexión a Kubernetes"
+           /bin/kubectl version
+           kubectl version
+           '''
+           }
+      }
+    }
+   }
+   
+   stage("Test in  QA") {
+   steps {
+    container(name: 'kubectl') {
+       script{
+           sh '''
+           #!/bin/bash
+           echo "Probando"
            proyecto=$(kubectl get namespace aemxqa -o "jsonpath={.metadata.name}")
            if [ "$proyecto" == ""]; then
              kubectl create namespace aemxqa
