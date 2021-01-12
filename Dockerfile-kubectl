@@ -7,4 +7,6 @@ RUN chmod 755 /bin/kubectl
 RUN mkdir /home/jenkins
 RUN useradd -d /home/jenkins -u 1001 fabs
 RUN chown -R 1001 /home/jenkins
+RUN chown -R 1001 $DIR
+RUN chmod 0755 $DIR
 USER 1001

@@ -22,8 +22,6 @@ spec:
     command:
     - /bin/cat
     tty: true
-    securityContext:
-      runAsUser: 0
 """
     }
   }
