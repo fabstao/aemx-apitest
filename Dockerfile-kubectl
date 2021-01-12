@@ -1,0 +1,7 @@
+FROM centos:latest
+MAINTAINER fabian.salamanca@rackspace.com
+ENV DIR /opt/kube
+WORKDIR $DIR
+COPY kubectl /bin
+RUN chmod 755 /bin/kubectl
+USER 1001

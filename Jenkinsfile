@@ -18,7 +18,7 @@ spec:
       value: true
   - name: kubectl
     workingDir: /home/jenkins
-    image: bitnami/kubectl:latest
+    image: harbor.rax.latamps.tech/aemxmvp/kubectl:latest
     imagePullPolicy: Always
     tty: true
     volumeMounts:
