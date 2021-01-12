@@ -19,6 +19,8 @@ spec:
     workingDir: /home/jenkins
     image: docker.io/fabstao/kubectl:latest
     imagePullPolicy: Always
+    command:
+    - /bin/cat
     tty: true
 """
     }
@@ -50,8 +52,7 @@ stages {
    steps {
     container(name: 'kubectl', shell: '/bin/bash') {
        script{
-           sh '''
-           #!/bin/bash
+           sh '''#!/bin/bash
            echo "Probando"
            proyecto=$(kubectl get namespace aemxqa -o "jsonpath={.metadata.name}")
            if [ "$proyecto" == ""]; then
