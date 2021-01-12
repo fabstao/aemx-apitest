@@ -58,7 +58,7 @@ stages {
    
    stage("Deploy to QA") {
    steps {
-    container(name: 'kubectl') {
+    container(name: 'kubectl', shell: '/bin/bash') {
        script{
            sh '''
            #!/bin/bash
@@ -73,7 +73,7 @@ stages {
    
    stage("Test in  QA") {
    steps {
-    container(name: 'kubectl') {
+    container(name: 'kubectl', shell: '/bin/bash') {
        script{
            sh '''
            #!/bin/bash
