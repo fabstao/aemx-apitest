@@ -61,7 +61,8 @@ stages {
     container(name: 'kubectl') {
        script{
            sh '''
-           #!/bin/sh
+           #!/bin/bash
+           echo "Iniciando conexión a Kubernetes"
            proyecto=$(kubectl get namespace aemxqa -o "jsonpath={.metadata.name}")
            if [ "$proyecto" == ""]; then
              kubectl create namespace aemxqa
@@ -80,7 +81,7 @@ stages {
    steps {
      container(name: 'kaniko', shell: '/busybox/sh') {
        script {
-           sh '''#!/busybox/sh
+           sh '''#!/bin/bash
                  echo Iniciando construcción del container
                  cp src/main/docker/Dockerfile.fast-jar ./Dockerfile
                  /kaniko/executor --context=`pwd` --skip-tls-verify --skip-tls-verify-pull --insecure --insecure-pull --insecure-registry --verbosity=debug --destination=harbor.rax.latamps.tech/aemxmvp/quarkusapp:${BUILD_NUMBER}
