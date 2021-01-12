@@ -46,13 +46,7 @@ stages {
    stage("Deploy to QA") {
    steps {
     container(name: 'kubectl', shell: '/bin/bash') {
-       script{
-           sh "echo Iniciando"
-           sh '''
-           /bin/kubectl version
-           kubectl version
-           '''
-           }
+       sh 'kubectl get namespaces'
       }
     }
    }
