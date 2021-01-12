@@ -18,7 +18,7 @@ spec:
       value: true
   - name: kubectl
     workingDir: /home/jenkins
-    image: harbor.rax.latamps.tech/aemxmvp/kubectl:latest
+    image: docker.io/fabstao/kubectl:latest
     imagePullPolicy: Always
     tty: true
     volumeMounts:
