@@ -21,18 +21,6 @@ spec:
     image: docker.io/fabstao/kubectl:latest
     imagePullPolicy: Always
     tty: true
-    volumeMounts:
-      - name: jenkins-docker-cfg
-        mountPath: /home/jenkins/.docker
-  volumes:
-  - name: jenkins-docker-cfg
-    projected:
-      sources:
-      - secret:
-          name: harbor-cred
-          items:
-            - key: .dockerconfigjson
-              path: config.json
 """
     }
   }
@@ -54,15 +42,13 @@ stages {
 /*
 
    */
-
    
    stage("Deploy to QA") {
    steps {
     container(name: 'kubectl', shell: '/bin/bash') {
        script{
+           sh "echo Iniciando"
            sh '''
-           #!/bin/bash
-           echo "Iniciando conexión a Kubernetes"
            /bin/kubectl version
            kubectl version
            '''
