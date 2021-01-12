@@ -23,7 +23,7 @@ spec:
     - /bin/cat
     tty: true
     securityContext:
-      runAsUser: 1001 
+      runAsUser: 0 
 """
     }
   }
