@@ -17,7 +17,7 @@ spec:
       value: true
   - name: kubectl
     workingDir: /home/jenkins
-    image: docker.io/fabstao/kubectl:latest
+    image: fabstao/kubectl:latest
     imagePullPolicy: Always
     command:
     - /bin/cat

@@ -1,15 +1,12 @@
 FROM centos:latest
 MAINTAINER fabian.salamanca@rackspace.com
-ENV DIR /opt/kube
+ENV DIR /home/jenkins
 WORKDIR $DIR
 COPY kubectl /bin
 RUN chmod 755 /bin/kubectl
-RUN mkdir /home/jenkins
 RUN useradd -d /home/jenkins -u 1001 fabs
 RUN chown -R 1001 /home/jenkins
-RUN chown -R 1001 $DIR
-RUN chmod 0777 $DIR
-RUN ls -l /opt
+RUN chmod -R 1777 /home/jenkins
 RUN ls -l /home
 
 USER 1001
