@@ -23,7 +23,7 @@ spec:
     - /bin/cat
     tty: true
     securityContext:
-      runAsUser: 0 
+      runAsUser: 1000 
 """
     }
   }
@@ -62,7 +62,7 @@ stages {
            sh '''#!/bin/bash
            echo "Probando"
            proyecto=$(kubectl get namespace aemxqa -o "jsonpath={.metadata.name}")
-           if [ "$proyecto" == ""]; then
+           if [ "$proyecto" == "" ]; then
              kubectl create namespace aemxqa
            fi
            kubectl get namespaces
