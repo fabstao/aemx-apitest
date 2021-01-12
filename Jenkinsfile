@@ -43,7 +43,11 @@ stages {
    stage("Deploy to QA") {
    steps {
     container(name: 'kubectl', shell: '/bin/bash') {
-       sh "uname -a"
+       script{
+           sh '''#!/bin/bash
+                 uname -a
+                 ls -la /home/jenkins
+           '''
       }
     }
    }
