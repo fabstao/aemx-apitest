@@ -4,4 +4,6 @@ ENV DIR /opt/kube
 WORKDIR $DIR
 COPY kubectl /bin
 RUN chmod 755 /bin/kubectl
+RUN mkdir /home/jenkins
+RUN chown -R 1001 /home/jenkins
 USER 1001
