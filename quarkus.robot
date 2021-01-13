@@ -1,6 +1,6 @@
 *** Settings ***
 Library    String
-Library    REST          http://172.10.10.1:8788          ssl_verify=false
+Library    REST          http://quarkusapp-service.aemxqa          ssl_verify=false
 
 *** Test Cases ***
 Fruits: Quantity

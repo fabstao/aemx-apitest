@@ -1,12 +1,13 @@
 FROM centos:latest
-MAINTAINER fabian.salamanca@rackspace.com
-WORKDIR /tmp
-COPY quarkus.robot /tmp
-COPY runtest.sh /tmp
-COPY requirements.txt /tmp
+MAINTAINER Fabián Salamanca <fabian.salamanca@rackspace.com> 
+ENV DIR /apitest
+WORKDIR $DIR
+COPY runtest.sh $DIR
+COPY requirements.txt $DIR
 RUN dnf -y install python3 python3-virtualenv
-USER 1001
-RUN cd /tmp ; virtualenv robot; source robot/bin/activate; pip install -r requirements.txt
+RUN chown -R 1000 $DIR
+USER 1000
+RUN cd $DIR ; virtualenv robot; source robot/bin/activate; pip install -r requirements.txt
 
-ENTRYPOINT ["./runtest.sh","quarkus.robot"]
+#ENTRYPOINT ["./runtest.sh", "quarkus.robot"]
 

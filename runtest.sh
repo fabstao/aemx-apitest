@@ -10,9 +10,7 @@ fi
 
 TEST=$1
 
-source robot/bin/activate
-
-pip install -r requirements.txt
+source /apitest/robot/bin/activate
 
 robot $TEST
 

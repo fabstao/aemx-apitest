@@ -23,6 +23,15 @@ spec:
     - /bin/cat
     tty: true
     securityContext:
+      runAsUser: 1000
+  - name: apitest
+    workingDir: /home/jenkins
+    image: fabstao/apitest:latest
+    imagePullPolicy: Always
+    command:
+    - /bin/cat
+    tty: true
+    securityContext:
       runAsUser: 1000 
 """
     }
@@ -47,8 +56,14 @@ stages {
     container(name: 'kubectl', shell: '/bin/bash') {
        script {
            sh '''#!/bin/bash
-                 uname -a
-                 ls -la /home/jenkins
+            uname -a
+            ls -la /home/jenkins
+            echo "Probando"
+            proyecto=$(kubectl get namespace aemxqa -o "jsonpath={.metadata.name}")
+            if [ "$proyecto" == "" ]; then
+              kubectl create namespace aemxqa
+            fi
+            kubectl apply -f quarkus-dep.yaml
            '''
        }
       }
@@ -57,15 +72,11 @@ stages {
    
    stage("Test in  QA") {
    steps {
-    container(name: 'kubectl', shell: '/bin/bash') {
+    container(name: 'apitest', shell: '/bin/bash') {
        script{
            sh '''#!/bin/bash
-           echo "Probando"
-           proyecto=$(kubectl get namespace aemxqa -o "jsonpath={.metadata.name}")
-           if [ "$proyecto" == "" ]; then
-             kubectl create namespace aemxqa
-           fi
-           kubectl get namespaces
+            echo "Pruebas de integración"
+            /apitest/runtest.sh quarkus.robot
            '''
            }
       }
