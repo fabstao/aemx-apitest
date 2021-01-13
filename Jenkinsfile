@@ -56,10 +56,7 @@ stages {
     container(name: 'kubectl', shell: '/bin/bash') {
        script {
            sh '''#!/bin/bash
-            uname -a
-            ls -la /home/jenkins/workspace
-            ls -la $WORKSPACE
-            echo "Desplegando"
+            echo "Desplegando..."
             proyecto=$(kubectl get namespace aemxqa -o "jsonpath={.metadata.name}")
             if [ "$proyecto" == "" ]; then
               kubectl create namespace aemxqa
@@ -85,5 +82,19 @@ stages {
       }
     }
    }
+
+  stage("Free resources") {
+   steps {
+    container(name: 'kubectl', shell: '/bin/bash') {
+       script {
+           sh '''#!/bin/bash
+            echo "Liberando..."
+            kubectl delete -f $WORKSPACE/quarkus-dep.yaml
+           '''
+       }
+      }
+    }
+   }
+
  }
 }

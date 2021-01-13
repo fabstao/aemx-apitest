@@ -17,6 +17,7 @@ spec:
       containers:
       - name: quarkusapp
         image: fabstao/quarkusapp:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 8788
 ---
