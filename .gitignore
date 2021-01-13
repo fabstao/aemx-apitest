@@ -1,3 +1,4 @@
-*.*ml
+*.html
+*.xml
 kubectl
 body
