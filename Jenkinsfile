@@ -57,13 +57,14 @@ stages {
        script {
            sh '''#!/bin/bash
             uname -a
-            ls -la /home/jenkins
-            echo "Probando"
+            ls -la /home/jenkins/workspace
+            ls -la $WORKSPACE
+            echo "Desplegando"
             proyecto=$(kubectl get namespace aemxqa -o "jsonpath={.metadata.name}")
             if [ "$proyecto" == "" ]; then
               kubectl create namespace aemxqa
             fi
-            kubectl apply -f quarkus-dep.yaml
+            kubectl apply -f $WORKSPACE/quarkus-dep.yaml
            '''
        }
       }
@@ -75,6 +76,8 @@ stages {
     container(name: 'apitest', shell: '/bin/bash') {
        script{
            sh '''#!/bin/bash
+            echo "Esperando a que levante la app..."
+            sleep 30
             echo "Pruebas de integración"
             /apitest/runtest.sh quarkus.robot
            '''
