@@ -1,6 +1,7 @@
-# Prueba kubectl en Jenkins
+# Continuous Delivery for Quarkus App
 
 ## Primera versión
 
-* Sin kubectl plugin de Jenkins
-* Push event trigger en Gitlab 
+- Crear ambiente de QA con kubectl
+- Probar API con Robot
+- Liberar recursos de QA
