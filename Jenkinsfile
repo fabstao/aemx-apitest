@@ -62,9 +62,7 @@ spec:
 		stage("Free Resources from QA") {
 			container(name: 'kubectl') {
 				script {
-				   sh '''#!/bin/bash
-					kubectl delete -f $WORKSPACE/quarkus-dep.yaml
-                   '''
+					sh 'kubectl delete -f $WORKSPACE/quarkus-dep.yaml'
                 }
 			}
 		}
