@@ -63,12 +63,6 @@ spec:
 			container(name: 'kubectl') {
 				script {
 				   sh '''#!/bin/bash
-					NSPACE=aemxqa
-					echo "Desplegando..."
-					proyecto=$(kubectl get namespace $NSPACE -o "jsonpath={.metadata.name}")
-					if [ "$proyecto" == "" ]; then
-					  kubectl create namespace $NSPACE
-					fi
 					kubectl delete -f $WORKSPACE/quarkus-dep.yaml
                    '''
                 }
