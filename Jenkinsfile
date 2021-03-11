@@ -56,6 +56,7 @@ spec:
 						sleep 25
 						echo "Probando API REST"
 						/apitest/runtest.sh quarkus.robot
+						'''
 				}
 			}
 		}
