@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: quarkusapp
-        image: fabstao/quarkusapp:latest
+        image: harbor.aero-phoenix.com/phoenix/quarkuapp
         imagePullPolicy: Always
         ports:
         - containerPort: 8788

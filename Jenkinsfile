@@ -1,12 +1,9 @@
-pipeline {
-agent {
-    kubernetes {
-      label 'apitest'
-      yaml """
+podTemplate(cloud: "kubernetes-qa", yaml: """\
+apiVersion: v1
 kind: Pod
 metadata:
-  name: apitest
-  namespace: jenkins-mvp
+  name: kaniko
+  namespace: jenkins
 spec:
   containers:
   - name: jnlp
@@ -33,68 +30,49 @@ spec:
     tty: true
     securityContext:
       runAsUser: 1000 
-"""
-    }
-  }
-
-
-stages {
-/*
- stage("Code Checkout from GitLab") {
-  steps {
-    container(name: 'jnlp') {
-	   git branch: 'dev',
-		credentialsId: 'gitlab_access_token',
-		url: 'https://gitlab.rax.latamps.tech/fsalaman/aemx-poc-cd.git'
-    }
-  }
- }
- */
-   
-   stage("Deploy to QA") {
-   steps {
-    container(name: 'kubectl', shell: '/bin/bash') {
-       script {
-           sh '''#!/bin/bash
-            echo "Desplegando..."
-            proyecto=$(kubectl get namespace aemxqa -o "jsonpath={.metadata.name}")
-            if [ "$proyecto" == "" ]; then
-              kubectl create namespace aemxqa
-            fi
-            kubectl apply -f $WORKSPACE/quarkus-dep.yaml
-           '''
-       }
-      }
-    }
-   }
-   
-   stage("Test in  QA") {
-   steps {
-    container(name: 'apitest', shell: '/bin/bash') {
-       script{
-           sh '''#!/bin/bash
-            echo "Esperando a que levante la app..."
-            sleep 30
-            echo "Pruebas de integración"
-            /apitest/runtest.sh quarkus.robot
-           '''
-           }
-      }
-    }
-   }
-
-  stage("Free resources") {
-   steps {
-    container(name: 'kubectl', shell: '/bin/bash') {
-       script {
-           sh '''#!/bin/bash
-            echo "Liberando..."
-            kubectl delete -f $WORKSPACE/quarkus-dep.yaml
-           '''
-       }
-      }
-    }
-   }
-
- }
-}
+""") {
+	node(POD_LABEL) {
+		git 'https://github.com/fabstao/aemx-apitest'
+		stage("Deploy to QA/Preprod") {
+			container(name: 'kubectl') {
+				script {
+				   sh '''#!/bin/bash
+					NSPACE=aemxqa
+					echo "Desplegando..."
+					proyecto=$(kubectl get namespace $NSPACE -o "jsonpath={.metadata.name}")
+					if [ "$proyecto" == "" ]; then
+					  kubectl create namespace $NSPACE
+					fi
+					kubectl apply -f $WORKSPACE/quarkus-dep.yaml
+                   '''
+                }
+			}
+		}
+		stage("Test with Robot API - QA/Prod") {
+			container(name: 'apitest') {
+				script {
+					sh '''#!/bin/bash
+						echo "Esperando a que levante el ambiente de prueba"
+						sleep 25
+						echo "Probando API REST"
+						/apitest/runtest.sh quarkus.robot
+				}
+			}
+		}
+		stage("Free Resources from QA") {
+			container(name: 'kubectl') {
+				script {
+				   sh '''#!/bin/bash
+					NSPACE=aemxqa
+					echo "Desplegando..."
+					proyecto=$(kubectl get namespace $NSPACE -o "jsonpath={.metadata.name}")
+					if [ "$proyecto" == "" ]; then
+					  kubectl create namespace $NSPACE
+					fi
+					kubectl delete -f $WORKSPACE/quarkus-dep.yaml
+                   '''
+                }
+			}
+		}
+	}
+} // END
